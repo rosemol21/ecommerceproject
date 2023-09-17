@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+{% if category %}
+        {{category.description|truncatewords:155 }}
+    {% else %}
+         Welcome to NEW CART where you can buy different items..
+{% endif %}
+{% endblock %}`
+
+{% block title %}
+{% if category %}
+        {{category.name }} - NEW CART
+    {% else %}
+         see our New Collections -NEW CART
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+
+<div>
+    <div class="row my_row_class">
+        <div class="mx-auto">
+            <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+        </div>
+    </div>
+</div>
+{% endif %}
+<div class="mx-auto">
+    {% if category %}
+        <img class="my_image" src="{{category.image.url}}" alt="{{category.name}}" style="height:300px; width:1100px;">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+    {% else %}
+<div>
+    <img class="my_image my_image_padding" src="{% static 'img/ban.png' %}" alt="our products" width="1400px;" height="450px;">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title"> our products collections</h1>
+    <p class="text-justify"> Embrace elegance with a Zara Women's Floral Print Midi Dress, a versatile A-line silhouette adorned with a captivating floral pattern. Elevate your style further with the Charles Keith Quilted Chain Crossbody Bag, featuring a classic quilted design and a gold-tone chain strap for a touch of luxury. And for the ultimate statement piece, indulge in the timeless opulence of the Louis Vuitton Monogram Canvas Neverfull Tote, a symbol of craftsmanship and sophistication with its iconic monogram canvas, spacious interior, and adjustable side straps. These fashion gems from Zara, Charles Keith, and Louis Vuitton will undoubtedly elevate your wardrobe and style.</p>
+</div>
+    {% endif %}
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+                <div class="my_bottom_marin col-9 col-sm-12 col-md-4 xol-lg-4">
+                    <div class="card text-center" style="min-width:18rem;">
+                        <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}" style="height:300px; width:300px;"> </a>
+                            <div class="card-body">
+                                <h4>{{product.name}}</h4>
+                                <p>{{product.price}}</p>
+                            </div>
+                    </div>
+                </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+        {% if products.paginator.num_pages > 1 %}
+
+        <hr>
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+                <a href="?page={{pg}}"  class="btn btn-light btn-sm  {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+
+{% endblock %}
